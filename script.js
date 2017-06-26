@@ -1,4 +1,6 @@
-var data;
+var data; //TODO: save this data in a service so I can fetch
+          //instead of making a global variable
+
 (function makeRequest() {
   httpRequest = new XMLHttpRequest();
 
@@ -14,16 +16,16 @@ var data;
 function alertContents() {
   if (httpRequest.readyState === XMLHttpRequest.DONE) {
     if (httpRequest.status === 200) {
-      data = httpRequest.responseText;
-      parseData();
+      data = JSON.parse(httpRequest.responseText);
+      parseData(data);
     } else {
       alert('There was a problem with the request.');
     }
   }
 };
 
-function parseData() {
-  var publishedData = data.filter(function(obj) {
+function parseData(data) {
+  let publishedData = data.filter(function(obj) {
     return obj['is_published'];
   });
   data = publishedData;
@@ -42,10 +44,10 @@ function sortData() {
       return a.title.toLowerCase() > b.title.toLowerCase();
     } else return a.title.toLowerCase() < b.title.toLowerCase();
   });
-  addData(data);
+  addData();
 }
 
-function addData(data) {
+function addData() {
   data.forEach(function(obj) {
     var element = '<img src="images/' + obj.image_name + ' " class="assets-image" />';
     element += '<h3 class="image-title">' + obj.title + '</h3> <h4>' + obj.image_name + '</h4>';
@@ -53,7 +55,6 @@ function addData(data) {
     element += '<i class="material-icons">favorite</i><i class="material-icons">grade</i>';
     var newDiv = document.createElement("div");
     newDiv.className = 'assets-container';
-
     newDiv.innerHTML = element;
     document.getElementById('assets-data').appendChild(newDiv);
   });

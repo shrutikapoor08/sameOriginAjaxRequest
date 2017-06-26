@@ -64,7 +64,7 @@
   margin-right: 10px;
   flex-grow: 1;
 }
-//TODO: add styles for description and title
+
 .image-title {
   text-transform: capitalize;
 }
